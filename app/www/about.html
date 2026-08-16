@@ -1,0 +1,180 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>TissuePPI</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+        .highlight {
+            background-color: #fffde7;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border-left: 4px solid #f1c40f;
+            margin: 20px 0;
+        }
+        .tech-item {
+            background-color: #f1c40f;
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: black;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    </style>
+  </head>
+  <body>
+    <div style="width: 100%; min-height: 100vh; background: white; display: flex; flex-direction: column;">
+        <div style="flex-shrink: 0; background: white;">
+            <div style="width: 100%; height: 79px; padding: 12px 40px; border-bottom: 1px #E5E8EB solid; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; justify-content: flex-start; align-items: center; gap: 32px;">
+                    <div style="display: flex; justify-content: flex-start; align-items: center; gap: 16px;">
+                        <div style="display: inline-flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;">
+                            <div style="color: #121417; font-size: 18px; font-family: Inter; font-weight: 700; line-height: 23px; word-wrap: break-word">
+                                {{ home }}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-start; align-items: center; gap: 36px;">
+                        <div style="display: inline-flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;">
+                            <div style="color: #121417; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 21px; word-wrap: break-word">
+                                {{ go_home }}
+                            </div>
+                        </div>
+                        <div style="display: inline-flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;">
+                            <div style="color: #121417; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 21px; word-wrap: break-word">
+                                {{ go_search }}
+                            </div>
+                        </div>
+                        <div style="display: inline-flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;">
+                            <div style="color: #121417; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 21px; word-wrap: break-word">
+                                {{ go_about }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 200px; height: 36px; position: relative; overflow: hidden">
+                    <a href="https://dalmolingroup.github.io/" target="_blank" style="display: inline-block;">
+                      <img src="https://raw.githubusercontent.com/dalmolingroup/dalmolingroup.github.io/refs/heads/main/images/logo_letra_preta.svg" 
+                           alt="Logo" style="height: 25px;" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div style="flex: 1; overflow-y: auto; padding: 20px 160px; display: flex; justify-content: center;">
+            <div style="max-width: 960px; width: 100%;">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-blue-500 pb-2">About TissuePPI</h2>
+                    <p class="text-gray-700 text-lg mb-6">
+                        <strong>TissuePPI</strong> is an interactive web application designed for visualizing and analyzing tissue-specific protein-protein interaction (PPI) networks. Built with R Shiny and powerful network analysis libraries, this tool provides researchers with an intuitive interface to explore complex biological networks in a tissue-specific context.
+                    </p>
+                
+                    <div class="highlight">
+                        <p class="mb-0">
+                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i> 
+                            <strong>Scientific Impact:</strong> Understanding tissue-specific protein interactions is crucial for elucidating tissue-specific biological functions, identifying potential tissue-specific drug targets, discovering novel biomarkers, and advancing precision medicine approaches.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-blue-500 pb-2">Technical Specifications</h2>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Technology Stack</h3>
+                    <div class="flex flex-wrap gap-3 mb-6">
+                        <span class="tech-item">R Shiny</span>
+                        <span class="tech-item">igraph</span>
+                        <span class="tech-item">visNetwork</span>
+                        <span class="tech-item">SQLite</span>
+                        <span class="tech-item">dplyr</span>
+                        <span class="tech-item">HTML/CSS/JavaScript</span>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Architecture</h3>
+                    <div class="space-y-3">
+                        <p class="text-gray-700">
+                            <strong>Backend:</strong> R Shiny server with igraph for network analysis and computation
+                        </p>
+                        <p class="text-gray-700">
+                            <strong>Database:</strong> SQLite for storage and retrieval of tissue-specific interaction data
+                        </p>
+                        <p class="text-gray-700">
+                            <strong>Visualization Engine:</strong> visNetwork for interactive network rendering and manipulation
+                        </p>
+                        <p class="text-gray-700">
+                            <strong>Data Structure:</strong> Graph-based representation of protein interactions with tissue annotations and metadata
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Purpose Section -->
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-blue-500 pb-2">Purpose</h2>
+                    <p class="text-gray-700">
+                        TissuePPI is a web application designed to facilitate the exploration and analysis of tissue-specific protein interaction networks. It allows researchers to investigate protein interactions within specific tissues, providing insights into the functional organization of cells and tissues. 
+                    </p>
+                </div>
+                
+                <!-- Methodology Section -->
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-blue-500 pb-2">Methodology</h2>
+                    <p class="text-gray-700">
+                        The tissue-specific protein interaction networks in TissuePPI are constructed using a multi-step process. First, we integrate protein interaction data from String DB, which includes experimental data, text mining, gene co-expression, and curated databases. Second, we incorporate tissue-specific gene expression data to filter and refine the interactions, retaining only those relevant to the selected tissue. Finally, we apply network analysis techniques to identify key proteins and interactions, providing a comprehensive view of the tissue-specific interactome.
+                    </p>
+                </div>
+
+                <!-- Data Sources Section -->
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-blue-500 pb-2">Data Sources</h2>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-database text-blue-500 mt-1 mr-3"></i>
+                            <div>
+                                <strong>Protein Interaction Databases:</strong> Data from String DB V12 that integrates interaction information from various databases such as IntAct, Mint, and Bind..
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-chart-bar text-blue-500 mt-1 mr-3"></i>
+                            <div>
+                                <strong>Gene Expression Data:</strong> Tissue-specific gene expression data from GTEx projects V8 are used to filter interactions and ensure tissue relevance.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- References Section -->
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-blue-500 pb-2">References</h2>
+                        <div class="space-y-3">
+                             <p class="text-gray-700"> Barabási, Albert-László et al. “Network medicine: a network-based approach to human disease.” Nature reviews. Genetics vol. 12,1 (2011): 56-68. doi:10.1038/nrg2918
+                            </p>
+                            <p class="text-gray-700">  Szklarczyk, Damian et al. “The STRING database in 2023: protein-protein association networks and functional enrichment analyses for any sequenced genome of interest.” Nucleic acids research vol. 51,D1 (2023):
+                                D638-D646. doi:10.1093/nar/gkac1000.
+                           </p>
+
+                            <p class="text-gray-700"> GTEx Consortium. “The GTEx Consortium atlas of genetic regulatory effects across human tissues.” Science (New York, N.Y.) vol. 369,6509 (2020): 1318-1330. doi:10.1126/science.aaz177
+                                Data from String that integrates interaction information from various databases such as IntAct, Mint, and Bind.
+                            </p>
+                            <p class="text-gray-700"> Kitsak, Maksim et al. “Tissue Specificity of Human Disease Module.” Scientific reports vol. 6 35241. 17 Oct. 2016, doi:10.1038/srep35241
+                            </p>
+                            <p class="text-gray-700"> Oughtred, Rose, et al. “The BioGRID Database: A Comprehensive Biomedical Resource of Curated Protein, Genetic, and Chemical Interactions.” Protein Science, vol. 30, no. 1, Oct. 2020, p. 187, doi.org/10.1002/pro.3978.
+                            </p>
+                            <p class="text-gray-700"> Tabrizi-Nezhadi, Parinaz et al. “Application of Protein-Protein Interaction Network Analysis in Order to Identify Cervical Cancer miRNA and mRNA Biomarkers.” TheScientificWorldJournal vol. 2023 6626279. 14 Sep. 2023, doi:10.1155/2023/6626279.
+                            </p>
+                            <p class="text-gray-700"> Kupershmidt, Yael et al. “SPIDER: constructing cell-type-specific protein-protein interaction networks.” Bioinformatics advances vol. 4,1 vbae130. 30 Aug. 2024, doi:10.1093/bioadv/vbae130.
+                            </p>
+                            <p class="text-gray-700"> Zitnik, Marinka, and Jure Leskovec. “Predicting multicellular function through multi-layer tissue networks.” Bioinformatics (Oxford, England) vol. 33,14 (2017): i190-i198. doi:10.1093/bioinformatics/btx252.
+                            </p>
+                            
+                       </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>

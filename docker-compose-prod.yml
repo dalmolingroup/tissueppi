@@ -1,0 +1,27 @@
+
+services:
+  tissueppi-api:
+    image: tissueppi-tissueppi-api
+    container_name: tissueppi-api
+    ports:
+      - "8003:8003"
+    networks:
+      - tissue-net
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  tissueppi-app:
+    image: tissueppi-tissueppi-app
+    container_name: tissueppi-app
+    ports:
+      - "3838:3838"
+    networks:
+      - tissue-net
+    depends_on:
+      - tissueppi-api
+    restart: unless-stopped
+
+networks:
+  tissue-net:
+    driver: bridge

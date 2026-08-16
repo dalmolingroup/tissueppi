@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<!-- home.html -->
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>TissuePPI</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+        .stat-card {
+            background: linear-gradient(135deg, #2c3e50 0%, #58b8c7 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 180px;
+            flex: 1;
+            margin: 10px;
+            box-sizing: border-box;
+        }
+
+        .stat-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            margin: 0 auto;
+            max-width: 900px;
+        }
+
+        .how-it-works-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 220px;
+        }
+
+        .step-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: #2c3e50;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        /* Ajustes para telas menores */
+        @media (max-width: 1024px) {
+            .how-it-works-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                max-width: 800px;
+            }
+            
+            .stat-container {
+                max-width: 700px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stat-card {
+                min-width: 150px;
+                padding: 15px;
+            }
+            
+            .stat-container {
+                gap: 10px;
+            }
+            
+            .how-it-works-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                gap: 12px;
+            }
+            
+            .step-card {
+                min-height: auto;
+                padding: 20px;
+            }
+            
+            .step-number {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-card {
+                min-width: 100%;
+                margin: 5px 0;
+            }
+            
+            .content-wrapper {
+                padding: 0 15px;
+            }
+        }
+    </style>
+  </head>
+  <body>
+    <div style="width: 100%; min-height: 100vh; background: white; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex">
+        <div style="align-self: stretch; min-height: 800px; background: white; overflow: hidden; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: flex">
+            <div style="align-self: stretch; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: flex">
+                <div style="align-self: stretch; height: 79px; padding-left: 40px; padding-right: 40px; padding-top: 12px; padding-bottom: 12px; border-bottom: 1px #E5E8EB solid; justify-content: space-between; align-items: center; display: inline-flex">
+                        <div style="width: 100%; height: 100%; padding-left: 40px; padding-right: 40px; padding-top: 12px; padding-bottom: 12px; border-bottom: 1px #E5E8EB solid; justify-content: space-between; align-items: center; display: inline-flex">
+                            <div style="justify-content: flex-start; align-items: center; gap: 32px; display: flex">
+                                <div style="justify-content: flex-start; align-items: center; gap: 16px; display: flex">
+                                    <div style="flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex">
+                                        <div style="color: #121417; font-size: 18px; font-family: Inter; font-weight: 700; line-height: 23px; word-wrap: break-word">
+                                            {{ home }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="justify-content: flex-start; align-items: center; gap: 36px; display: flex">
+                                    <div style="flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex">
+                                        <div style="color: #121417; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 21px; word-wrap: break-word">
+                                            {{ go_home }}
+                                        </div>
+                                    </div>
+                                    <div style="flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex">
+                                        <div style="color: #121417; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 21px; word-wrap: break-word">
+                                            {{ go_search }}
+                                        </div>
+                                    </div>
+                                    <div style="flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex">
+                                        <div style="color: #121417; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 21px; word-wrap: break-word">
+                                            {{ go_about }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 200px; height: 36px; position: relative; overflow: hidden">
+                                <a href="https://dalmolingroup.github.io/" target="_blank" style="display: inline-block;">
+                                  <img src="https://raw.githubusercontent.com/dalmolingroup/dalmolingroup.github.io/refs/heads/main/images/logo_letra_preta.svg" 
+                                       alt="Logo" style="height: 25px;" />
+                                </a>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-wrapper">
+                    <div style="flex: 1 1 0; padding-top: 20px; padding-bottom: 20px; justify-content: center; align-items: flex-start; display: inline-flex; width: 100%;">
+                        <div style="flex: 1 1 0; max-width: 100%; overflow: hidden; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex; width: 100%;">
+                            <div style="align-self: stretch; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: flex; width: 100%;">
+                                <div style="align-self: stretch; flex: 1 1 0; padding: 16px; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: flex; width: 100%;">
+                                    <div style="align-self: stretch; min-height: 450px; position: relative; background: linear-gradient(90deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.40) 100%); overflow: hidden; border-radius: 8px; width: 100%;">
+                                        <img src="assets/home.png" style="width: 100%; height: 100%; object-fit: cover;" />
+                                        <div style="width: 100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); flex-direction: column; justify-content: center; align-items: center; gap: 15px; display: inline-flex; padding: 0 20px; box-sizing: border-box;">
+                                            <div style="text-align: center; color: white; font-size: clamp(24px, 4vw, 40px); font-family: Inter; font-weight: 900; line-height: 1.2; word-wrap: break-word; width: 100%;">
+                                                Explore Tissue-Specific Protein Interactions
+                                            </div>
+                                            <div style="text-align: center; color: white; font-size: clamp(13px, 1.8vw, 15px); font-family: Inter; font-weight: 400; line-height: 1.4; word-wrap: break-word; width: 100%; max-width: 800px;">
+                                                Uncover the intricate relationships between proteins in different tissues. Search for specific proteins or browse featured interactions to gain insights into cellular processes.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Estatisticas -->
+                            <section class="py-10 bg-white" style="width: 100%;">
+                                <div class="container mx-auto px-4" style="width: 100%;">
+                                    <div class="stat-container">
+                                        <div class="stat-card">
+                                            <div style="font-size: 32px; font-weight: bold; margin-bottom: 8px;">500,000+</div>
+                                            <div style="font-size: 13px; opacity: 0.9;">Protein Interactions</div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div style="font-size: 32px; font-weight: bold; margin-bottom: 8px;">50+</div>
+                                            <div style="font-size: 13px; opacity: 0.9;">Human Tissues</div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div style="font-size: 32px; font-weight: bold; margin-bottom: 8px;">10,000+</div>
+                                            <div style="font-size: 13px; opacity: 0.9;">Unique Proteins</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            
+                            <!-- How It Works Section -->
+                            <section class="py-12 bg-white" style="width: 100%;">
+                                <div class="container mx-auto px-4" style="width: 100%;">
+                                    <div class="text-center mb-10">
+                                        <h2 style="font-size: 28px; font-weight: bold; color: #121417; margin-bottom: 10px;">How It Works</h2>
+                                        <p style="color: #637887; max-width: 800px; margin: 0 auto; font-size: 15px;">
+                                            Get started with TissuePPI in four simple steps
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="how-it-works-grid">
+                                        <div class="step-card">
+                                            <div class="step-number">1</div>
+                                            <h3 style="font-size: 18px; font-weight: bold; color: #121417; margin-bottom: 12px;">Select Tissue</h3>
+                                            <p style="color: #637887; font-size: 14px; line-height: 1.4;">
+                                                Choose the tissue of interest from our comprehensive database of human tissues
+                                            </p>
+                                        </div>
+                                        <div class="step-card">
+                                            <div class="step-number">2</div>
+                                            <h3 style="font-size: 18px; font-weight: bold; color: #121417; margin-bottom: 12px;">Select Protein</h3>
+                                            <p style="color: #637887; font-size: 14px; line-height: 1.4;">
+                                                Choose the protein of interest from our extensive protein database
+                                            </p>
+                                        </div>
+                                        <div class="step-card">
+                                            <div class="step-number">3</div>
+                                            <h3 style="font-size: 18px; font-weight: bold; color: #121417; margin-bottom: 12px;">Visualize Network</h3>
+                                            <p style="color: #637887; font-size: 14px; line-height: 1.4;">
+                                                Visualize and interact with the tissue-specific protein interaction network
+                                            </p>
+                                        </div>
+                                        <div class="step-card">
+                                            <div class="step-number">4</div>
+                                            <h3 style="font-size: 18px; font-weight: bold; color: #121417; margin-bottom: 12px;">Export Network</h3>
+                                            <p style="color: #637887; font-size: 14px; line-height: 1.4;">
+                                                Export results for your research in html or csv formats
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <!-- Botão de call-to-action -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>

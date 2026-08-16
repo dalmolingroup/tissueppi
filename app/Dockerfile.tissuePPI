@@ -1,0 +1,25 @@
+FROM rocker/shiny-verse:latest
+
+RUN apt-get update && apt-get install -y libglpk-dev && rm -rf /var/lib/apt/lists/*
+ 
+RUN R -e "install.packages(c('shiny', 'shinycssloaders', 'markdown', 'DT', 'igraph','ggraph','httr', 'jsonlite', 'DBI', 'RSQLite', 'dplyr', 'tidyverse', 'tidygraph', 'plumber', 'visNetwork'))"
+
+# Limpar o diretório para evitar problemas
+RUN rm -rf /srv/shiny-server/*
+
+COPY ./www /srv/shiny-server/www
+COPY tissuePPI.R /srv/shiny-server/
+
+
+
+# shiny-server.conf com configuração necessária para o Shiny localizar os arquivos
+# É necessário quando usa-se um endereço no formato: dominio.com.br/aplicação
+COPY shiny-server.conf /etc/shiny-server/shiny-server.conf
+
+# Alterar o nome da aplicação para o padrão, assim o shiny carrega automaticamente
+RUN mv /srv/shiny-server/tissuePPI.R /srv/shiny-server/app.R
+
+RUN chown -R shiny:shiny /srv/shiny-server
+
+EXPOSE 3838
+

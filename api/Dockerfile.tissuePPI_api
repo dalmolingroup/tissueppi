@@ -1,0 +1,21 @@
+FROM rstudio/plumber:latest
+
+RUN apt-get update && apt-get install -y \
+    libsqlite3-dev \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
+    libsodium-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN R -e "install.packages(c('igraph', 'DBI', 'RSQLite', 'pool', 'vroom', 'dplyr', 'magrittr'), repos='https://cran.r-project.org')" \
+	&& rm -rf /tmp/Rtmp* && rm -rf /tmp/downloaded_packages && rm -rf ~/.cache
+
+
+COPY ./tissuePPI_api.R /app/tissuePPI_api.R
+
+
+EXPOSE 8003
+
+ENTRYPOINT ["R", "-e", "pr <- plumber::plumb('/app/tissuePPI_api.R'); pr$run(host='0.0.0.0', port=8003)"]
+

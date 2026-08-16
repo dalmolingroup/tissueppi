@@ -1,0 +1,29 @@
+
+services:
+  tissueppi-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.tissuePPI_api
+    container_name: tissueppi-api
+    ports:
+      - "8003:8003"
+    networks:
+      - tissue-net
+    volumes:
+      - ./data:/app/data
+
+
+  tissueppi-app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.tissuePPI
+    container_name: tissueppi-app
+    ports:
+      - "3838:3838"
+    networks:
+      - tissue-net
+    depends_on:
+      - tissueppi-api
+networks:
+  tissue-net:
+    driver: bridge
