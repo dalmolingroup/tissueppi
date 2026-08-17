@@ -240,7 +240,18 @@ server <- function(input, output, session) {
       }
     }
   )
-  # Rever o sql que traz esses dados, está trazendo só os dados dos vizinhos.
+
+  output$download_database <- downloadHandler(
+    
+    filename = function() {
+      paste0("tissueppi_interactions_", Sys.Date(), ".gz")
+    },
+    content = function(file) {
+
+      file.copy("/app/data/interactions.gz", file)
+          }
+  )
+  
   output$download_tissue_edges <- downloadHandler(
 
     filename = function() {
@@ -417,7 +428,9 @@ server <- function(input, output, session) {
         graph_interactions = uiOutput("graph_ui_single"),
         downloadHTML = downloadButton("download_network", "Network (HTML)"),
         downloadEDGES = downloadButton("download_edges", "Edge List (CSV)"),
-        downloadTISSUE = downloadButton("download_tissue_edges", "Tissue's Edge (CSV)")
+        downloadTISSUE = downloadButton("download_tissue_edges", "Tissue's Edge (CSV)"),
+        downloadDATA = downloadButton("download_database", "Full Database")
+        
       ),
       help = htmlTemplate("www/help.html", !!!nav_buttons),
       multiple_search = htmlTemplate(

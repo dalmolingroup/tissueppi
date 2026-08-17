@@ -84,7 +84,6 @@ extract_subgraph_by_degree <- function(edges, seed_protein, layer) {
   }
 }
 
-
 #* Gerar a lista de códigos de proteinas
 #* @get /protein_list
 function() {

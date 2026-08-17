@@ -22,6 +22,8 @@ services:
       - "3838:3838"
     networks:
       - tissue-net
+    volumes:
+      - ./data:/app/data
     depends_on:
       - tissueppi-api
 networks:

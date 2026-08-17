@@ -1,0 +1,4 @@
+*.db
+*.sqlite
+./data/*
+./app/about.md
