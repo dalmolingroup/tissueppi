@@ -30,10 +30,10 @@ flowchart TD
 
 To run the application locally:
  - First create a directory
- - Download the data files to the created directory
+ - Download the database at http://dalmolingroup.imd.ufrn.br/tissueppi
  - Change to created directory
- - Clone de application with command: git clone 
- - Create the database with the command: sqlite3 ./dados/interacoes.sqlite < create-database.sql.
+ - Clone de application with command: git clone git@github.com:dalmolingroup/tissueppi.git
+ - Copy the database from the download directory to application directory.
  
  Then, make sure you have docker and docker compose installed, and you only need to run
  
