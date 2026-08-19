@@ -2,16 +2,17 @@ library(shiny)
 library(httr)
 library(jsonlite)
 library(visNetwork)
-library(ggraph)       # Excluir se não for usar
-library(ggplot2)      # Excluir se não for usar o ggraph
 library(dplyr)
 library(igraph)  
 library(tidygraph)
 library(shinycssloaders)
+library(shinyjs)
 
 # Função para chamar a API, para teste local descomente a linha com "localhost"
 api_base_url <- "http://tissueppi-api:8003"
 #api_base_url <- "http://localhost:8003"
+
+addResourcePath("web_data", "/app/data")
 
 sqlite_path <- file.path(getwd(), "data", "interactions.sqlite")
 
@@ -43,8 +44,51 @@ protein_input <- fetch_from_api("/protein_list")
 
 ui_page <- reactiveVal("home")
 
-ui <- uiOutput("main_ui")
+#ui <- uiOutput("main_ui")
+ui <- tagList(
+  useShinyjs(), # Inicializa o shinyjs
+  tags$head(
+    tags$style(HTML("
+    /* Estilo Moderno do Botão de Download */
+  .btn-download-modern {
+    background-color: #d97706;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
 
+  /* Efeito ao passar o mouse (Hover) */
+  .btn-download-modern:hover {
+    background-color: #b45309;
+    box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+  }
+  /* Efeito ao clicar (Active) */
+  .btn-download-modern:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  }
+      .spinner { border: 3px solid rgba(255,255,255,0.4); border-top: 3px solid #ffffff; 
+                 border-radius: 50%; width: 20px; height: 20px; 
+                 animation: spin 0.8s linear infinite;
+                 display: inline-block; 
+                 vertical-align: middle; margin-right: 10px; }
+      @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    "))
+  ),
+  uiOutput("main_ui")
+)
 server <- function(input, output, session) {
 
   # Criar o grafo para exibição no visNetwork
@@ -69,39 +113,6 @@ server <- function(input, output, session) {
      V(grafo)$y <- coords[, 2]
      return(grafo)
   }
-  criarGrafo <- function(arestas, metricas){
-#    grafo <- graph_from_data_frame(arestas, directed = FALSE)
-    grafo <- as_tbl_graph(arestas, directed = FALSE) %>% 
-      # Calcula o grau (número de conexões) para cada nó e salva em uma variável
-      mutate(grau = centrality_degree(), clusterizacao = local_transitivity())
-    
-    ggraph(grafo, layout = "stress") + 
-      # Arestas finas e discretas
-      geom_edge_link(color = "blue", alpha = 0.3, width = 0.3) + 
-      # Mapeia TAMANHO ao grau e COR à clusterização
-      geom_node_point(aes(size = grau, color = clusterizacao)) + 
-      # Escala de cores contínua (ex: plasma ou viridis)
-      scale_color_viridis_c(
-        option = "plasma", 
-        name = "Coef. Clusterização",
-        limits = c(0, 1) # Força a legenda a exibir a escala real de 0 a 1
-      ) + 
-      # Escala de tamanho dos nós físicos
-      scale_size_continuous(range = c(2, 8), name = "Grau (Conexões)") +
-      # Nomes dos nós sem sobreposição
-      geom_node_text(aes(label = name), repel = TRUE, size = 2.5, max.overlaps = 20) + 
-      labs(
-        title = "Tissueppi version 1.0",
-        subtitle = "Protein ACTB2 network on tissue bladder",
-        caption = "Source: Tissueppi version 1.0"
-      ) +
-      # Tema limpo de rede
-      theme_void() +
-      theme(
-        legend.position = "right",
-        plot.background = element_rect(fill = "white", color = NA)
-      )
-}
   # Calcular a escala para o tamaho do nó.
   scale_size <- function(x) {
     if (all(x == 0)) return(rep(5, length(x)))
@@ -129,7 +140,6 @@ server <- function(input, output, session) {
   output$protein_selector_ui <- renderUI({
     selectInput("protein", "", 
                    choices = protein_input$geneSymbol,
-#                    choices = setNames(protein_input$idProtein, protein_input$geneSymbol),
                     selected = "FUCA2")
   })
   
@@ -244,12 +254,18 @@ server <- function(input, output, session) {
   output$download_database <- downloadHandler(
     
     filename = function() {
-      paste0("tissueppi_interactions_", Sys.Date(), ".gz")
+      paste0("interactions.sqlite")
     },
     content = function(file) {
-
-      file.copy("/app/data/interactions.gz", file)
-          }
+      runjs("$('#download_database').prop('disabled', true).addClass('loading');")
+      runjs("$('#download_database').prepend('<div class=\"spinner\"></div>');")
+      file.copy("/app/data/interactions.sqlite", file)
+      runjs("
+            setTimeout(function() {
+              $('.spinner').remove();
+              $('#download_database').prop('disabled', false).removeClass('loading');
+            }, 10000);")
+    }        
   )
   
   output$download_tissue_edges <- downloadHandler(
@@ -328,6 +344,7 @@ server <- function(input, output, session) {
       go_about = actionButton("go_about", "About"),
       go_search = actionButton("single_search", "Search"),
       go_help = actionButton("go_help", "Help"),
+      go_downloadDB = actionButton("go_downloadDB", "Download DB"),
       multiple_search = actionButton("multiple_search", "Multiple Proteins"),
       single_search = actionButton("single_search", "Single Protein"),
       search_single_protein = actionButton("search_single_protein", "Search"),
@@ -363,7 +380,6 @@ server <- function(input, output, session) {
         visIgraph(grafo) %>%
           visEdges(arrows = "none") %>%
           visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
-#        grafo <- criarGrafo(edges, nodesMetrics)
               }
     })
 
@@ -401,7 +417,10 @@ server <- function(input, output, session) {
     switch(
       ui_page(),
       home = htmlTemplate("www/home.html", !!!nav_buttons),
-      downloadFiles = htmlTemplate("www/download.html", !!!nav_buttons),
+      downloadDB = htmlTemplate("www/download.html", !!!nav_buttons,
+#        downloadDATA = downloadButton("download_database", "Full Database download")
+         go_downloadDB = actionButton("go_downloadDB", "Download DB")
+      ),
       about = htmlTemplate("www/about.html", !!!nav_buttons),
       single_search = htmlTemplate(
         "www/single_search.html",
@@ -429,7 +448,6 @@ server <- function(input, output, session) {
         downloadHTML = downloadButton("download_network", "Network (HTML)"),
         downloadEDGES = downloadButton("download_edges", "Edge List (CSV)"),
         downloadTISSUE = downloadButton("download_tissue_edges", "Tissue's Edge (CSV)"),
-        downloadDATA = downloadButton("download_database", "Full Database")
         
       ),
       help = htmlTemplate("www/help.html", !!!nav_buttons),
@@ -456,6 +474,7 @@ server <- function(input, output, session) {
   observeEvent(input$home, ui_page("home"))
   observeEvent(input$go_home, ui_page("home"))
   observeEvent(input$go_about, ui_page("about"))
+  observeEvent(input$go_downloadDB, ui_page("downloadDB"))
   observeEvent(input$go_search, ui_page("search"))
   observeEvent(input$go_help, ui_page("help"))
   observeEvent(input$single_search, ui_page("single_search"))

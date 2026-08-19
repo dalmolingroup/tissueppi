@@ -2,7 +2,7 @@ FROM rocker/shiny-verse:latest
 
 RUN apt-get update && apt-get install -y libglpk-dev && rm -rf /var/lib/apt/lists/*
  
-RUN R -e "install.packages(c('shiny', 'shinycssloaders', 'markdown', 'DT', 'igraph','ggraph','httr', 'jsonlite', 'DBI', 'RSQLite', 'dplyr', 'tidyverse', 'tidygraph', 'plumber', 'visNetwork'))"
+RUN R -e "install.packages(c('shiny', 'shinyjs', 'shinycssloaders', 'markdown', 'DT', 'igraph','ggraph','httr', 'jsonlite', 'DBI', 'RSQLite', 'dplyr', 'tidyverse', 'tidygraph', 'plumber', 'visNetwork'))"
 
 # Limpar o diretório para evitar problemas
 RUN rm -rf /srv/shiny-server/*
