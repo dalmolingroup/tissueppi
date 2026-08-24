@@ -7,6 +7,7 @@ library(igraph)
 library(tidygraph)
 library(shinycssloaders)
 library(shinyjs)
+library(htmltools)
 
 # Função para chamar a API, para teste local descomente a linha com "localhost"
 api_base_url <- "http://tissueppi-api:8003"
@@ -49,7 +50,6 @@ ui <- tagList(
   useShinyjs(), # Inicializa o shinyjs
   tags$head(
     tags$style(HTML("
-    /* Estilo Moderno do Botão de Download */
   .btn-download-modern {
     background-color: #d97706;
     color: white;
@@ -94,9 +94,8 @@ server <- function(input, output, session) {
   # Criar o grafo para exibição no visNetwork
   createGraph <- function(arestas, metricas) {
      grafo <- graph_from_data_frame(arestas, directed = FALSE)
-     paleta <- colorRampPalette(c("#1f77b4", "#d62728"))(100)
-     metricas$color <- color_map(metricas$degree, paleta)
-     metricas <- metricas %>% mutate(size = (metricas$clustering*100))
+     metricas$color <- color_map(metricas$clustering*100)
+     metricas <- metricas %>% mutate(size = (scale_size(metricas$degree)))
      nodesGraph <- data.frame(proteinName = V(grafo)$name, stringsAsFactors = FALSE)
      nodesGraph <- nodesGraph %>% left_join(metricas, by = c("proteinName" = "geneSymbol"))
   
@@ -116,27 +115,26 @@ server <- function(input, output, session) {
   # Calcular a escala para o tamaho do nó.
   scale_size <- function(x) {
     if (all(x == 0)) return(rep(5, length(x)))
-    scaled <- log10(x) * 15
+    scaled <- log10(x) * 25
     scaled
   }
-  # Definir a cor baseada no grau.
-  color_map <- function(x, paleta) {
-    min_val <- 1
-    max_val <- 10000
+  # Definir a cor baseada no coeficiente de clusterização.
+  color_map <- function(values, initialColor = "#1f77b4", finalColor = "#d62728") {
     
-    # Evita log de zero ou negativo
-    x <- pmax(pmin(x, max_val), min_val) 
+    # 1. Cria a função de rampa de cores
+    graphPalette <- colorRampPalette(c(initialColor, finalColor))
     
-    # Aplica o log na base 10 (escala de 0 a 4, log10(10000) = 4)
-    log_x <- log10(x)
-    log_min <- log10(min_val)
-    log_max <- log10(max_val)
+    # 2. Garante que os valores estejam dentro do intervalo [0, 100]
+    # Isso evita erros se algum valor estiver fora do esperado
+    limitValues <- pmax(pmin(values, 100), 0)
     
-    # Normaliza na escala logarítmica e mapeia para 1:100
-    indices <- round(((log_x - log_min) / (log_max - log_min)) * 99) + 1
-    return(paleta[indices])
+    # 3. Mapeia os valores para a paleta de 100 níveis
+    # +1 pois a paleta é indexada de 1 a 100
+    indices <- round(limitValues) + 1
+    
+    # Retorna o vetor de cores correspondente
+    return(graphPalette(101)[indices])
   }
-  
   output$protein_selector_ui <- renderUI({
     selectInput("protein", "", 
                    choices = protein_input$geneSymbol,
@@ -377,11 +375,58 @@ server <- function(input, output, session) {
           "Betweenness: ", V(grafo)$betweenness, "<br>",
           "Coef. Clustering: ", V(grafo)$clustering
         )
-        visIgraph(grafo) %>%
+          visIgraph(grafo) %>%
           visEdges(arrows = "none") %>%
           visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
+
               }
     })
+    # Cria a legenda para o grafo, o visNetwork não cria legendas em gradiente 
+    output$graph_ui_legend <- renderUI({
+      nodesMetrics <- datalist_rv()$allProteinsMetrics
+      minDegree <- min(nodesMetrics$degree,na.rm = TRUE)
+      avgDegree <- mean(nodesMetrics$degree,na.rm = TRUE)
+      maxDegree <- max(nodesMetrics$degree,na.rm = TRUE)
+      minDegree <- round(minDegree,1)
+      avgDegree <- round(avgDegree,1)
+      maxDegree <- round(maxDegree,1)
+
+      tags$div(
+      style = "display: flex; justify-content: center; gap: 40px; background: #ffffff; padding: 15px; border-top: 1px solid #ddd; font-family: Arial, sans-serif; font-size: 12px; color: #333;",
+      
+      # Escala Gradiente de Cor
+      tags$div(
+        style = "display: flex; flex-direction: column; align-items: center;",
+        tags$div("Node color: Clustering", style = "font-weight: bold; margin-bottom: 5px;"),
+        tags$div(style = "width: 180px; height: 12px; background: linear-gradient(to right, #1f77b4, #d62728); border-radius: 3px; margin-bottom: 3px;"),
+        tags$div(style = "display: flex; justify-content: space-between; width: 180px; font-size: 10px; color: #666;",
+                 tags$span("Low"), tags$span("High")
+        )
+      ),
+      
+      # Escala em Círculos para o tamanho baseado no grau
+      tags$div(
+        style = "display: flex; flex-direction: column; align-items: center;",
+        tags$div("Node size: Degree", style = "font-weight: bold; margin-bottom: 5px;"),
+        tags$div(
+          style = "display: flex; align-items: flex-end; gap: 15px;",
+          tags$div(style = "display: flex; flex-direction: column; align-items: center;",
+                   tags$div(style = "width: 8px; height: 8px; background: #888; border-radius: 50%; margin-bottom: 2px;"),
+                   tags$span(minDegree, style = "font-size: 10px; color: #666;")
+          ),
+          tags$div(style = "display: flex; flex-direction: column; align-items: center;",
+                   tags$div(style = "width: 15px; height: 15px; background: #888; border-radius: 50%; margin-bottom: 2px;"),
+                   tags$span(avgDegree, style = "font-size: 10px; color: #666;")
+          ),
+          tags$div(style = "display: flex; flex-direction: column; align-items: center;",
+                   tags$div(style = "width: 22px; height: 22px; background: #888; border-radius: 50%; margin-bottom: 2px;"),
+                   tags$span(maxDegree, style = "font-size: 10px; color: #666;")
+          )
+        )
+      )
+    )
+    })
+    
 
 # Alterar para usar a função createGraph  (Esta função ainda não foi implementada)      
     output$graph_ui_multiple <- renderUI({
@@ -418,7 +463,6 @@ server <- function(input, output, session) {
       ui_page(),
       home = htmlTemplate("www/home.html", !!!nav_buttons),
       downloadDB = htmlTemplate("www/download.html", !!!nav_buttons,
-#        downloadDATA = downloadButton("download_database", "Full Database download")
          go_downloadDB = actionButton("go_downloadDB", "Download DB")
       ),
       about = htmlTemplate("www/about.html", !!!nav_buttons),
@@ -445,6 +489,7 @@ server <- function(input, output, session) {
         tissue_clustering = textOutput("tissue_clustering_ui"),
         tissue_degree = textOutput("tissue_degree_ui"),
         graph_interactions = uiOutput("graph_ui_single"),
+        graph_legend = uiOutput("graph_ui_legend"),
         downloadHTML = downloadButton("download_network", "Network (HTML)"),
         downloadEDGES = downloadButton("download_edges", "Edge List (CSV)"),
         downloadTISSUE = downloadButton("download_tissue_edges", "Tissue's Edge (CSV)"),

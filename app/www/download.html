@@ -31,7 +31,7 @@
     </style>
     <script>
 async function downloadFile(btn) {
-    // 1. Desativa o botão e mostra o spinner
+    // Desativar o botão e mostrar o spinner
     btn.disabled = true;
     btn.style.pointerEvents = 'none';
     btn.style.opacity = '0.6';
@@ -41,16 +41,15 @@ async function downloadFile(btn) {
     btn.innerHTML = '<div class="spinner" style="display:inline-block; vertical-align:middle; margin-right:8px;"></div> Downloading...';
 
     try {
-        // 2. Faz a requisição para o arquivo estático exposto pelo addResourcePath
+        // Fazer a requisição para o arquivo estático exposto pelo addResourcePath
         const response = await fetch('web_data/interactions.sqlite');
         
         if (!response.ok) throw new Error('Download failed !');
 
-        // Pega o fluxo de dados
+        // Pegar o fluxo de dados
         const blob = await response.blob();
         
-        // 3. O DOWNLOAD FOI CONCLUÍDO NO NAVEGADOR!
-        // Criamos um link temporário invisível para forçar o navegador a salvar o arquivo no disco
+        // Criar um atalho temporário invisível para forçar o navegador a salvar o arquivo no disco
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -68,7 +67,7 @@ async function downloadFile(btn) {
         console.error('Download failed:', error);
         alert('An error occurred while downloading the file.');
     } finally {
-        // 4. RESTAURA O BOTÃO (Executado obrigatoriamente ao terminar ou se der erro)
+        // RESTAURA O BOTÃO 
         btn.disabled = false;
         btn.style.pointerEvents = 'auto';
         btn.style.opacity = '1';

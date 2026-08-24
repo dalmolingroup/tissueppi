@@ -510,13 +510,9 @@
                                         <div id="grafo_interacoes_single" class="visnetwork" style="height: 500px; min-height: 400px; width: 100%; position: relative; border-radius: 8px; border: 1px solid #E5E8EB;">
                                             {{ graph_interactions }}
                                         </div>
-                                        
                                         <!-- Legenda ou informações adicionais -->
-                                        <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; color: #637887; font-size: 12px; flex-wrap: wrap; gap: 8px;">
-                                            <div>- Click and drag to navigate - Scroll to zoom - Node size indicates proteins degrees</div>
-                                        </div>
-                                        <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; color: #637887; font-size: 12px; flex-wrap: wrap; gap: 8px;">
-                                            <div>- Node color indicates proteins clustering</div>
+                                        <div id="legenda_container" style="margin-top: 15px; display: flex; text-align: center;">
+                                           {{ graph_legend }}
                                         </div>
                                     </div>
                                 </div>
